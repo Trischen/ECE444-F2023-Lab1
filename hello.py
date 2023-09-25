@@ -26,7 +26,6 @@ class NameForm(FlaskForm):
 def page_not_found(e):
     return render_template('404.html'), 404
 
-
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
@@ -39,6 +38,7 @@ def clear_session():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = NameForm()
+    email = "Please use your UofT Email."
     if form.validate_on_submit():
         old_name = session.get('name')
         if old_name is not None and old_name != form.name.data:
@@ -47,10 +47,8 @@ def index():
         old_email = session.get('email')
         if old_email is not None and old_email != form.email.data:
             flash('Looks like you have changed your email!')
-        if 'utoronto' in form.email.data:
+        print(form.email.data)
+        if "utoronto" in form.email.data:
             session['email'] = form.email.data
-        else:
-            session['email'] = None
-
-        return redirect(url_for('index'))
-    return render_template('index.html', form=form, name=session.get('name'), email=session.get('email'))
+            email = f"Your UofT Email is {form.email.data}"
+    return render_template('index.html', form=form, name=session.get('name'), email=email)
