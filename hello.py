@@ -4,6 +4,7 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, ValidationError
+import os
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -52,3 +53,10 @@ def index():
             session['email'] = form.email.data
             email = f"Your UofT Email is {form.email.data}"
     return render_template('index.html', form=form, name=session.get('name'), email=email)
+
+
+"""
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
+"""
